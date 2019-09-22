@@ -6,9 +6,5 @@ public class Dollar extends Money{
         super(v,ccy);
 
     }
-    public Money times(int v){
-
-        return Money.dollar(value*v);
-    }
 
 }
