@@ -11,10 +11,10 @@ public  class Money {
 
 
     public static Money dollar(int v){
-        return new Dollar(v,"USD");
+        return new Money(v,"USD");
     }
     public static Money franc(int v){
-        return new Franc((v),"CHF");
+        return new Money((v),"CHF");
     }
 
     @Override
