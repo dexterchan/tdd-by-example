@@ -1,9 +1,8 @@
 package guru.springframework;
 
-public class Dollar {
-    int value;
-
+public class Dollar extends Money{
     public Dollar(int v){
+
         this.value=v;
     }
     public Dollar times(int v){
@@ -11,8 +10,5 @@ public class Dollar {
         return new Dollar(value*v);
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return ((Dollar)obj).value==this.value;
-    }
+
 }
