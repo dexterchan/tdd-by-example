@@ -10,17 +10,16 @@ public class MoneyTest {
     @Test
     void testMultiplication() {
         Money five = Money.dollar(5);
-        assertEquals(Money.dollar(5*2), five.times(2));
-        assertEquals(Money.dollar(5*3), five.times(3));
+        assertEquals(Money.dollar(5 * 2), five.times(2));
+        assertEquals(Money.dollar(5 * 3), five.times(3));
         Money fivef = Money.franc(5);
-        assertEquals(Money.franc(5*2),fivef.times(2));
-        assertEquals(Money.franc(5*3), fivef.times(3));
+        assertEquals(Money.franc(5 * 2), fivef.times(2));
+        assertEquals(Money.franc(5 * 3), fivef.times(3));
     }
 
     @Test
-    void testEqual(){
+    void testEqual() {
         assertEquals(Money.dollar(5), Money.dollar(5));
-
         assertNotEquals(Money.dollar(5), Money.dollar(15));
 
         assertNotEquals(Money.dollar(5), Money.franc(5));
@@ -30,14 +29,40 @@ public class MoneyTest {
     }
 
 
-
-
-
     @Test
-    void testCurrency(){
-        assertEquals("USD",Money.dollar(5).currency());
-        assertEquals("CHF",Money.franc(5).currency());
+    void testCurrency() {
+        assertEquals("USD", Money.dollar(5).currency());
+        assertEquals("CHF", Money.franc(5).currency());
     }
 
+    @Test
+    void testAddition(){
+        Money five = Money.dollar(5);
+        Expression sum = five.plus(five);
+        Bank bank = new Bank();
+        Money reduced = bank.reduce(sum,"USD");
+        assertEquals(Money.dollar(10),reduced);
+    }
 
+    @Test
+    void testPlusReturnSum(){
+        Money five = Money.dollar(5);
+        Expression result = five.plus(five);
+        Sum sum = (Sum) result;
+        assertEquals(five, sum.arguend);
+        assertEquals(five, sum.addmend);
+    }
+
+    @Test
+    void testReduceSum(){
+        Expression sum = new Sum(Money.dollar(3),Money.dollar(4));
+        Bank bank = new Bank();
+        Money result = bank.reduce(sum, "USD");
+        assertEquals(Money.dollar(7),result);
+    }
+    @Test
+    void testReduceMoney(){
+        Bank bank = new Bank();
+
+    }
 }
