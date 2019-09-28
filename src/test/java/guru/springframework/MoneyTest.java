@@ -40,8 +40,24 @@ public class MoneyTest {
         Money five = Money.dollar(5);
         Expression sum = five.plus(five);
         Bank bank = new Bank();
-        Money reduced = bank.reduce(sum,"USD");
+        Expression reduced = bank.reduce(sum,"USD");
         assertEquals(Money.dollar(10),reduced);
+
+        bank.addRate("CHF","USD",2);
+        sum = five.plus( Money.franc(2));
+        reduced = sum.reduce(bank, "USD");
+        assertEquals (Money.dollar(5+1),reduced);
+
+    }
+    @Test
+    public void testSumPlusMoney(){
+        Expression fiveBucks = Money.dollar(5);
+        Expression tenFrancs = Money.franc(10);
+        Bank bank = new Bank();
+        bank.addRate("CHF","USD",2);
+        Expression sum = new Sum(fiveBucks, tenFrancs).plus(fiveBucks);
+        Money result = bank.reduce(sum, "USD");
+        assertEquals(Money.dollar(15),result);
     }
 
     @Test
@@ -58,12 +74,12 @@ public class MoneyTest {
         Expression sum = new Sum(Money.dollar(3),Money.dollar(4));
         Bank bank = new Bank();
         bank.addRate("CHF","USD",2);
-        Money result = bank.reduce(sum, "USD");
+        Expression result = bank.reduce(sum, "USD");
         assertEquals(Money.dollar(7),result);
 
         sum = new Sum(Money.dollar(3), Money.franc(4));
         result = bank.reduce(sum,"USD");
-        assertEquals(Money.dollar(3+1),result);
+        assertEquals(Money.dollar(3+2),result);
     }
     @Test
     void testReduceMoney(){
@@ -83,5 +99,18 @@ public class MoneyTest {
     void testIdentityRate(){
         assertEquals(1, new Bank().rate("USD", "USD"));
         assertEquals(1, new Bank().rate("CHF", "CHF"));
+    }
+
+    @Test
+    public void testSumTimes(){
+        Expression fiveBucks = Money.dollar(5);
+        Expression tenFrancs = Money.franc(10);
+
+        Bank bank = new Bank();
+        bank.addRate("CHF","USD",2);
+        Expression sum = new Sum(fiveBucks,tenFrancs).times(2);
+        Money result = bank.reduce(sum, "USD");
+        assertEquals(Money.dollar(20),result);
+
     }
 }
